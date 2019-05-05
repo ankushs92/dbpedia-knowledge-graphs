@@ -1,12 +1,9 @@
 import lombok.val;
 
-import javax.xml.crypto.Data;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class DataLoader {
@@ -14,7 +11,7 @@ public class DataLoader {
 
     public static void main(String[] args) throws IOException {
         val authorsFile = asFile(FileName.AUTHORS);
-
+        
 
         val authors = read(authorsFile).map(Author::new);
 

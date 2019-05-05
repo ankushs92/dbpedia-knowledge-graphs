@@ -1,0 +1,1 @@
+Put all the files under the resources folder and then just go to DataLoader and run it
