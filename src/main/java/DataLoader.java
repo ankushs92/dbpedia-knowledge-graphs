@@ -33,10 +33,13 @@ public class DataLoader {
         File keywordsFile = asFile(FileName.KEYWORDS);
         File volumesFile = asFile(FileName.VOLUME);
         File reviewersArticles = asFile(FileName.REVIEWERS_ARTICLES);
-
+        File citedPapersFile = asFile(FileName.PAPER_CITATIONS);
+        File authorWroteArticleFile = asFile(FileName.AUTHOR_WROTE_ARTICLE);
+        File volumeOfJournalFile = asFile(FileName.VOLUME_OF_JOURNAL);
+        File paperInVolumeFile = asFile(FileName.VOLUME_HAS_ARTICLE);
 
         Stream<Author> authors = read(authorsFile).map(Author::new).limit(10);
-        Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0])).limit(10);
+        Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0]));
         Stream<Conference> conferences = read(confFile).map(Conference::new);
         Stream<Edition> editions = read(editionFile).map(record -> {
                                                     String editionName = record.split(",")[0];
@@ -65,6 +68,51 @@ public class DataLoader {
                                                     }
                                                 }).filter(Objects::nonNull);
 
+        Stream<PaperCitations> paperCitations = read(citedPapersFile).map(record -> {
+                                                        try {
+                                                            String[] arrayValues = record.split(",");
+                                                            return new PaperCitations(arrayValues[0], arrayValues[1]);
+                                                        }
+                                                        catch (final Exception ex) {
+                                                            // pass
+                                                            return null;
+                                                        }
+                                                    }).filter(Objects::nonNull);
+
+
+        Stream<AuthorWrotePaper> authorWrotePapers = read(authorWroteArticleFile).map(record -> {
+                                                            try {
+                                                                String[] arrayValues = record.split(",");
+                                                                return new AuthorWrotePaper(arrayValues[0], arrayValues[1]);
+                                                            }
+                                                            catch (final Exception ex) {
+                                                                // pass
+                                                                return null;
+                                                            }
+                                                     }).filter(Objects::nonNull);
+
+        Stream<VolumeOfJournal> volumeOfJournals = read(volumeOfJournalFile).map(record -> {
+                                                            try {
+                                                                String[] arrayValues = record.split(",");
+                                                                return new VolumeOfJournal(arrayValues[0], arrayValues[1]);
+                                                            }
+                                                            catch (final Exception ex) {
+                                                                // pass
+                                                                return null;
+                                                            }
+                                                        }).filter(Objects::nonNull);
+
+        Stream<PaperInVolume> paperInVolumes = read(paperInVolumeFile).map(record -> {
+                                                            try {
+                                                                String[] arrayValues = record.split(",");
+                                                                return new PaperInVolume(arrayValues[1], arrayValues[0]);
+                                                            }
+                                                            catch (final Exception ex) {
+                                                                // pass
+                                                                return null;
+                                                            }
+                                                        }).filter(Objects :: nonNull);
+
         //Jena
         Model model = ModelFactory.createDefaultModel();
         Property articleNameProp = model.createProperty(ARTICLE_NAME_BASE_PROPERTY_URL);
@@ -83,8 +131,11 @@ public class DataLoader {
         Property keywordsProp = model.createProperty(KEYWORDS_BASE_PROPERTY_URL);
 
         Property givesProp = model.createProperty(REVIEWER_GIVES_REVIEW_BASE_PROPERTY_URL);
-
-
+        Property citationsProp = model.createProperty(CITATIONS_BASE_PROPERTY_URL);
+        Property reviewProp = model.createProperty(REVIEW_BASE_PROPERTY_URL);
+        Property wroteProp = model.createProperty(AUTHOR_WROTE_PAPER_BASE_PROPERTY_URL);
+        Property volumePartOfProp = model.createProperty(VOLUME_PART_OF_BASE_PROPERTY_URL);
+        Property paperVolume = model.createProperty(PAPER_VOLUME_BASE_PROPERTY_URL);
 
         authors.forEach(author -> {
             val authorName = author.getName();
@@ -92,62 +143,116 @@ public class DataLoader {
                  .addLiteral(authorNameProp, authorName);
         });
 
-
         articles.forEach(article -> {
             val articleName = article.getName();
-            Resource articleResource = model.createResource(ARTICLE_BASE_URL + "/" + asUtf8(articleName))
-                                        .addLiteral(articleNameProp, articleName);
-
-            int randomNum = generateRandomIntegersBetween(0, keywords.size() - 1);
-            for(int i = 0 ; i < randomNum ; i ++) {
-                articleResource.addLiteral(keywordsProp, keywords.get(i));
-            }
+            model.createResource(ARTICLE_BASE_URL + "/" + asUtf8(articleName))
+                                        .addLiteral(articleNameProp, articleName)
+                                        .addLiteral(keywordsProp, keywords.get(generateRandomIntegersBetween(0, keywords.size() - 1)));
         });
 
-        conferences.forEach(conf -> {
-            val confName = conf.getName();
-            model.createResource(CONF_BASE_URL + "/" + asUtf8(confName))
-                 .addLiteral(confNameProp, confName);
-        });
-
-        editions.forEach(edition -> {
-            String editionName = edition.getName();
-            model.createResource(EDITION_BASE_URL + "/" + asUtf8(editionName))
-                 .addLiteral(editionNameProp, editionName)
-                 .addLiteral(editionYearProp, String.valueOf(edition.getYear()))
-                 .addLiteral(editionCityProp, String.valueOf(edition.getCity()));
-        });
-
-        journals.forEach(journal -> {
-            String journalName = journal.getName();
-            model.createResource(JOURNAL_BASE_URL + "/" + asUtf8(journalName))
-                    .addLiteral(journalNameProp, journalName);
-        });
-        volumes.forEach(volume-> {
-            String volumeName = volume.getName();
-            model.createResource(VOLUME_BASE_URL + "/" + asUtf8(volumeName))
-                 .addLiteral(volumeNameProp, volumeName)
-                 .addLiteral(volumeYearProp, String.valueOf(volume.getYear()))
-                 .addLiteral(volumeCityProp, String.valueOf(volume.getCity()));
-        });
+//        conferences.forEach(conf -> {
+//            val confName = conf.getName();
+//            model.createResource(CONF_BASE_URL + "/" + asUtf8(confName))
+//                 .addLiteral(confNameProp, confName);
+//        });
 //
-        reviewerArticles.forEach(reviewerArticle -> {
-            String reviewerName = reviewerArticle.getAuthorName();
-            String paperName = reviewerArticle.getPaperName();
-            Review review = new Review(DUMMY_REVIEW, Util.randomDate());
+//        editions.forEach(edition -> {
+//            String editionName = edition.getName();
+//            model.createResource(EDITION_BASE_URL + "/" + asUtf8(editionName))
+//                 .addLiteral(editionNameProp, editionName)
+//                 .addLiteral(editionYearProp, String.valueOf(edition.getYear()))
+//                 .addLiteral(editionCityProp, String.valueOf(edition.getCity()));
+//        });
+//
+//        journals.forEach(journal -> {
+//            String journalName = journal.getName();
+//            model.createResource(JOURNAL_BASE_URL + "/" + asUtf8(journalName))
+//                    .addLiteral(journalNameProp, journalName);
+//        });
+//        volumes.forEach(volume-> {
+//            String volumeName = volume.getName();
+//            model.createResource(VOLUME_BASE_URL + "/" + asUtf8(volumeName))
+//                 .addLiteral(volumeNameProp, volumeName)
+//                 .addLiteral(volumeYearProp, String.valueOf(volume.getYear()))
+//                 .addLiteral(volumeCityProp, String.valueOf(volume.getCity()));
+//        });
+////
+//        reviewerArticles.forEach(reviewerArticle -> {
+//            String reviewerName = reviewerArticle.getAuthorName();
+//            String paperName = reviewerArticle.getPaperName();
+//            String paperUri =  ARTICLE_BASE_URL + "/" + asUtf8(paperName);
+//            Review review = new Review(DUMMY_REVIEW, Util.randomDate());
+//
+//            String reviewUri =  REVIEW_BASE_URL + "/" + asUtf8(review.getContent());
+//            Resource reviewResource = model.createResource(reviewUri)
+//                 .addLiteral(reviewContentProp, review.getContent())
+//                 .addLiteral(reviewDateProp, review.getDate());
+//
+//            Resource reviewerResource = model.createResource(REVIEWER_BASE_URL + "/" + asUtf8(reviewerName))
+//                                             .addLiteral(reviewerNameProp, reviewerName);
+//
+//            model.add(model.createStatement(reviewerResource, givesProp, reviewResource));
+//
+//            Resource paperResource = model.getResource(paperUri);
+//            model.add(model.createStatement(paperResource, reviewProp, reviewResource));
+//
+//        });
+//
 
-            String reviewUri =  REVIEW_BASE_URL + "/" + asUtf8(review.getContent());
-            Resource reviewResource = model.createResource(reviewUri)
-                 .addLiteral(reviewContentProp, review.getContent())
-                 .addLiteral(reviewDateProp, review.getDate());
+//        paperCitations.forEach(paperCitation -> {
+//            String paperName = paperCitation.getPaperName();
+//            String citedPaperName = paperCitation.getCitedPaperName();
+//            String paperUri = ARTICLE_BASE_URL + "/" + asUtf8(paperName);
+//            String citedPaperUri = ARTICLE_BASE_URL + "/" + asUtf8(citedPaperName);
+//            Resource paperResource = model.getResource(paperUri);
+//            Resource citedPaperResource = model.getResource(citedPaperUri);
+//
+//            model.add(model.createStatement(paperResource, citationsProp, citedPaperResource));
+//        });
 
-            Resource reviewerResource = model.createResource(REVIEWER_BASE_URL + "/" + asUtf8(reviewerName))
-                                             .addLiteral(reviewerNameProp, reviewerName);
+//        authorWrotePapers.forEach(authorWrotePaper -> {
+//            String authorName = authorWrotePaper.getAuthorName();
+//            String paperName = authorWrotePaper.getPaperName();
+//
+//            String authorUri = AUTHOR_BASE_URL + "/" + asUtf8(authorName);
+//            String paperUri = ARTICLE_BASE_URL + "/" + asUtf8(paperName);
+//
+//            Resource authorResource = model.getResource(authorUri);
+//            Resource paperResource = model.getResource(paperUri);
+//
+//            model.add(model.createStatement(authorResource, wroteProp, paperResource));
+//
+//        });
 
-            model.add(model.createStatement(reviewerResource, givesProp, reviewResource));
+        volumeOfJournals.forEach(volumeOfJournal -> {
+            String volName = volumeOfJournal.getVolume();
+            String journalName = volumeOfJournal.getJournalName();
+
+            String volUri = VOLUME_BASE_URL + "/" + asUtf8(volName);
+            String journalUri = JOURNAL_BASE_URL + "/" + asUtf8(journalName);
+
+            Resource volResource = model.getResource(volUri);
+            Resource journalResource = model.getResource(journalUri);
+
+            model.add(model.createStatement(volResource, volumePartOfProp, journalResource));
         });
 
-        model.write(new FileOutputStream(asFile(FileName.OUTPUT)), "N-TRIPLE");
+        paperInVolumes.forEach(paperInVolume -> {
+            String paperName = paperInVolume.getPaperName();
+            String volumeName = paperInVolume.getVolumeName();
+
+            String paperUri = ARTICLE_BASE_URL + "/" + asUtf8(paperName);
+            String volumeUri = VOLUME_BASE_URL + "/" + asUtf8(volumeName);
+
+            Resource paperResource = model.getResource(paperUri);
+            Resource volumeResource = model.getResource(volumeUri);
+            model.add(model.createStatement(paperResource, paperVolume, volumeResource));
+
+        });
+
+        model.write(System.out, "N-TRIPLE");
+
+//        model.write(new FileOutputStream(asFile(FileName.OUTPUT)), "N-TRIPLE");
 
     }
 

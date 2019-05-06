@@ -33,6 +33,12 @@ public class Constants {
     public static String REVIEW_CONTENT_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#reviewContent";
     public static String REVIEW_DATE_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#reviewDate";
 
+    public static String CITATIONS_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#cites";
+    public static String REVIEW_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#review";
+    public static String AUTHOR_WROTE_PAPER_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#wrote";
+    public static String VOLUME_PART_OF_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#wrote";
+    public static String PAPER_VOLUME_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#volume";
+
 
 
     public static String AUTHOR_BASE_URL = BASE_URL + "/author";
