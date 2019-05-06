@@ -1,8 +1,5 @@
 package model;
 
-import lombok.Builder;
-import lombok.Data;
-
 public class Edition {
 
     private final String name;
