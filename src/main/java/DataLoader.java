@@ -2,7 +2,9 @@ import lombok.val;
 import model.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.util.FileManager;
 import org.apache.jena.vocabulary.VCARD;
 import org.apache.jena.vocabulary.VCARD4;
 
@@ -22,60 +24,95 @@ import static model.Constants.*;
 
 public class DataLoader {
 
+
     public static void main(String[] args) throws IOException {
-        val authorsFile = asFile(FileName.AUTHORS);
-        val articlesFile = asFile(FileName.ARTICLES);
-        val confFile = asFile(FileName.CONFERENCE);
-        val editionFile = asFile(FileName.EDITION);
-        val journalsFile = asFile(FileName.JOURNAL);
-        val keywordsFile = asFile(FileName.KEYWORDS);
+        File authorsFile = asFile(FileName.AUTHORS);
+        File articlesFile = asFile(FileName.ARTICLES);
+        File confFile = asFile(FileName.CONFERENCE);
+        File editionFile = asFile(FileName.EDITION);
+        File journalsFile = asFile(FileName.JOURNAL);
+        File keywordsFile = asFile(FileName.KEYWORDS);
+        File volumesFile = asFile(FileName.VOLUME);
+//        File reviewersFile = asFile(FileName.REVIEWERS);
 
 
-        val authors = read(authorsFile).map(Author::new).limit(10);
-        val articles = read(articlesFile).map(record -> new Article(record.split(",")[0]));
-        val conferences = read(confFile).map(Conference::new);
-        val editions = read(editionFile).map(record -> {
-            val editionName = record.split(",")[0];
-            return Edition
-                    .builder()
-                        .name(editionName)
-                        .year(YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1)))
-                        .city(CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1)))
-                    .build();
+        Stream<Author> authors = read(authorsFile).map(Author::new).limit(10);
+        Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0])).limit(10);
+        Stream<Conference> conferences = read(confFile).map(Conference::new);
+        Stream<Edition> editions = read(editionFile).map(record -> {
+            String editionName = record.split(",")[0];
+            Integer year = YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1));
+            String city = CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1));
+            return new Edition(editionName, year, city);
         });
-        val journals = read(journalsFile).map(Journal::new);
-        val keywords = read(keywordsFile).map(Keyword::new);
 
+        Stream<Journal> journals = read(journalsFile).map(Journal::new);
+        Stream<String> keywords = read(keywordsFile);
+        Stream<Volume> volumes = read(volumesFile).map(record -> {
+            String volumeName = record.split(",")[0];
+            Integer year = YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1));
+            String city = CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1));
+            return new Volume(volumeName, year, city);
+        });
 
 
         //Jena
-        val model = ModelFactory.createDefaultModel();
-        val articleNameProp = model.createProperty(BASE_PROPERTY_URL);
+        Model model = ModelFactory.createDefaultModel();
+        Property articleNameProp = model.createProperty(ARTICLE_NAME_BASE_PROPERTY_URL);
+        Property authorNameProp = model.createProperty(AUTHOR_NAME_BASE_PROPERTY_URL);
+        Property confNameProp = model.createProperty(CONF_NAME_BASE_PROPERTY_URL);
+        Property editionNameProp = model.createProperty(EDITION_NAME_BASE_PROPERTY_URL);
+        Property editionYearProp = model.createProperty(EDITION_YEAR_BASE_PROPERTY_URL);
+        Property editionCityProp = model.createProperty(EDITION_CITY_BASE_PROPERTY_URL);
+        Property journalNameProp = model.createProperty(JOURNAL_NAME_BASE_PROPERTY_URL);
+        Property volumeNameProp = model.createProperty(VOLUME_NAME_BASE_PROPERTY_URL);
+        Property volumeYearProp = model.createProperty(VOLUME_YEAR_BASE_PROPERTY_URL);
+        Property volumeCityProp = model.createProperty(VOLUME_CITY_BASE_PROPERTY_URL);
 
-        authors.forEach(author -> {
-            val authorName = author.getName();
-            model.createResource(AUTHOR_BASE_URL + "/" + asUtf8(authorName))
-                 .addLiteral(articleNameProp, authorName);
+
+
+//        authors.forEach(author -> {
+//            val authorName = author.getName();
+//            model.createResource(AUTHOR_BASE_URL + "/" + asUtf8(authorName))
+//                 .addLiteral(authorNameProp, authorName);
+//        });
+//
+
+//        articles.forEach(article -> {
+//            val articleName = article.getName();
+//            model.createResource(ARTICLE_BASE_URL + "/" + asUtf8(articleName))
+//                 .addLiteral(articleNameProp, articleName);
+//        });
+
+//        conferences.forEach(conf -> {
+//            val confName = conf.getName();
+//            model.createResource(CONF_BASE_URL + "/" + asUtf8(confName))
+//                 .addLiteral(confNameProp, confName);
+//        });
+//
+//        editions.forEach(edition -> {
+//            String editionName = edition.getName();
+//            model.createResource(EDITION_BASE_URL + "/" + asUtf8(editionName))
+//                 .addProperty(editionNameProp, editionName)
+//                 .addProperty(editionYearProp, String.valueOf(edition.getYear()))
+//                 .addProperty(editionCityProp, String.valueOf(edition.getCity()));
+//        });
+
+//        journals.forEach(journal -> {
+//            String journalName = journal.getName();
+//            model.createResource(EDITION_BASE_URL + "/" + asUtf8(journalName))
+//                    .addProperty(journalNameProp, journalName);
+//        });
+        volumes.forEach(volume-> {
+            String volumeName = volume.getName();
+            model.createResource(EDITION_BASE_URL + "/" + asUtf8(volumeName))
+                 .addProperty(volumeNameProp, volumeName)
+                 .addProperty(volumeYearProp, String.valueOf(volume.getYear()))
+                 .addProperty(volumeCityProp, String.valueOf(volume.getCity()));
         });
 
 
-        articles.forEach(article -> {
-            val articleName = article.getName();
-            model.createResource(ARTICLE_BASE_URL + "/" + asUtf8(articleName))
-                 .addLiteral(articleNameProp, articleName);
-        });
-
-        conferences.forEach(conf -> {
-            val confName = conf.getName();
-            model.createResource(CONF_BASE_URL + "/" + asUtf8(confName))
-                 .addLiteral(articleNameProp, confName);
-        });
-
-        System.out.println(model.getResource(CONF_BASE_URL + "/conf/Conf1"));
-
-        //Properties
         model.write(System.out);
-
 
     }
 
