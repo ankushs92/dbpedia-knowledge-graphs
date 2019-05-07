@@ -1,0 +1,419 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#"
+     xml:base="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#cites -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#cites">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#edition -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#edition">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Edition"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#edition_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#edition_part_of">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Edition"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Conference"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#gives -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#gives">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Reviewer"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Review"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#keyword -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#keyword">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#review -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#review">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Review"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volume -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volume">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Volume"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volume_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volume_part_of">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Volume"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Journal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#wrote -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#wrote">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Author"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#topObjectProperty -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topObjectProperty">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#authorName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#authorName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Author"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#confName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#confName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Conference"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#editionCity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#editionCity">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Edition"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#editionName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#editionName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Edition"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#editionYear -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#editionYear">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Edition"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#journalName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#journalName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Journal"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#paperName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#paperName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#reviewContent -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#reviewContent">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Review"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#reviewDate -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#reviewDate">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Review"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#reviewerName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#reviewerName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Reviewer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volumeCity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volumeCity">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Volume"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volumeName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volumeName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Volume"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volumeYear -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#volumeYear">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Volume"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#topDataProperty -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topDataProperty">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Journal"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Author -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Author"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Conference -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Conference"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Database_Conference -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Database_Conference">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Conference"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#DemoPaper -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#DemoPaper">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Edition -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Edition"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#FullPaper -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#FullPaper">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Journal -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Journal"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Open_Access_Journal -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Open_Access_Journal">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Journal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Review -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Review"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Reviewer -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Reviewer">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Author"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#ShortPaper -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#ShortPaper">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#SurveyPaper -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#SurveyPaper">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Paper"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Volume -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Volume"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Database_Conference -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#Database_Conference"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#DemoPaper"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#FullPaper"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#ShortPaper"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3#SurveyPaper"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
