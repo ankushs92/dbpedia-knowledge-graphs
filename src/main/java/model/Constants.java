@@ -8,7 +8,7 @@ public class Constants {
 
     public static final String DUMMY_REVIEW = "Lorem Ipsum";
 
-    public static final String BASE_URL = "http://semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3/author";
+    public static final String BASE_URL = "http://semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3";
     public static final String BASE_PROPERTY_URL = "http://semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3/property";
 
     public static final String KEYWORDS_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#keyword";
