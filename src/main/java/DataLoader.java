@@ -185,7 +185,7 @@ public class DataLoader {
             Resource editionResource = model.createResource(EDITION_BASE_URL + "/" + asUtf8(editionName))
                                              .addLiteral(editionNameProp, editionName)
                                              .addLiteral(editionYearProp, String.valueOf(edition.getYear()))
-                                             .addLiteral(editionCityProp, String.valueOf(edition.getCity()));
+                                             .addLiteral(editionCityProp, edition.getCity());
             model.add(model.createStatement(editionResource, rdfTypeProp, editionClassResource));
         });
 
@@ -202,11 +202,11 @@ public class DataLoader {
             Resource volumeResource = model.createResource(VOLUME_BASE_URL + "/" + asUtf8(volumeName))
                                              .addLiteral(volumeNameProp, volumeName)
                                              .addLiteral(volumeYearProp, String.valueOf(volume.getYear()))
-                                             .addLiteral(volumeCityProp, String.valueOf(volume.getCity()));
+                                             .addLiteral(volumeCityProp, volume.getCity());
 
             model.add(model.createStatement(volumeResource, rdfTypeProp, journalClassResource));
         });
-//
+
         reviewerArticles.forEach(reviewerArticle -> {
             String reviewerName = reviewerArticle.getAuthorName();
             String paperName = reviewerArticle.getPaperName();
@@ -230,8 +230,7 @@ public class DataLoader {
             model.add(model.createStatement(paperResource, reviewProp, reviewResource));
 
         });
-//
-//
+
         paperCitations.forEach(paperCitation -> {
             String paperName = paperCitation.getPaperName();
             String citedPaperName = paperCitation.getCitedPaperName();
@@ -242,7 +241,7 @@ public class DataLoader {
 
             model.add(model.createStatement(paperResource, citationsProp, citedPaperResource));
         });
-//
+
         authorWrotePapers.forEach(authorWrotePaper -> {
             String authorName = authorWrotePaper.getAuthorName();
             String paperName = authorWrotePaper.getPaperName();
@@ -255,7 +254,7 @@ public class DataLoader {
 
             model.add(model.createStatement(authorResource, wroteProp, paperResource));
         });
-//
+
         volumeOfJournals.forEach(volumeOfJournal -> {
             String volName = volumeOfJournal.getVolume();
             String journalName = volumeOfJournal.getJournalName();
@@ -268,7 +267,7 @@ public class DataLoader {
 
             model.add(model.createStatement(volResource, volumePartOfProp, journalResource));
         });
-//
+
         paperInVolumes.forEach(paperInVolume -> {
             String paperName = paperInVolume.getPaperName();
             String volumeName = paperInVolume.getVolumeName();
@@ -303,7 +302,7 @@ public class DataLoader {
     }
 
     private static File asFile(final String fileName) {
-        val absFilePath = DataLoader.class.getClassLoader().getResource(fileName).getFile();
+        String absFilePath = DataLoader.class.getClassLoader().getResource(fileName).getFile();
         return new File(absFilePath);
     }
     private static final Random random = new Random();
@@ -318,6 +317,7 @@ public class DataLoader {
         }
         return result.get(0);
     }
+
     private static String asUtf8(final String string) {
         try {
             return URLEncoder.encode(string, "UTF-8");
