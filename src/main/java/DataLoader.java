@@ -1,4 +1,3 @@
-import lombok.val;
 import model.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -6,7 +5,6 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -41,86 +39,86 @@ public class DataLoader {
         Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0]));
         Stream<Conference> conferences = read(confFile).map(Conference::new);
         Stream<Edition> editions = read(editionFile).map(record -> {
-                                                    String editionName = record.split(",")[0];
-                                                    Integer year = YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1));
-                                                    String city = CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1));
-                                                    return new Edition(editionName, year, city);
-                                                });
+            String editionName = record.split(",")[0];
+            Integer year = YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1));
+            String city = CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1));
+            return new Edition(editionName, year, city);
+        });
 
         Stream<Journal> journals = read(journalsFile).map(Journal::new);
         Stream<PaperKeyword> paperKeywords = read(keywordsFile).map(record -> {
-                                                                try {
-                                                                    String[] arrayValues = record.split(",");
-                                                                    return new PaperKeyword(arrayValues[1], arrayValues[0]);
-                                                                }
-                                                                catch (final Exception ex) {
-                                                                    //pass
-                                                                }
-                                                                return null;
-                                                          }).filter(Objects::nonNull);
+            try {
+                String[] arrayValues = record.split(",");
+                return new PaperKeyword(arrayValues[1], arrayValues[0]);
+            }
+            catch (final Exception ex) {
+                //pass
+            }
+            return null;
+        }).filter(Objects::nonNull);
 
         Stream<Volume> volumes = read(volumesFile).map(record -> {
-                                                    String volumeName = record.split(",")[0];
-                                                    Integer year = YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1));
-                                                    String city = CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1));
-                                                    return new Volume(volumeName, year, city);
-                                                });
+            String volumeName = record.split(",")[0];
+            Integer year = YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1));
+            String city = CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1));
+            return new Volume(volumeName, year, city);
+        });
 
         Stream<ReviewerArticle> reviewerArticles = read(reviewersArticles).map(record -> {
-                                                    try {
-                                                        String[] arrayValues = record.split(",");
-                                                        return new ReviewerArticle(arrayValues[0], arrayValues[1]);
-                                                    }
-                                                    catch (final Exception ex) {
-                                                        //pass
-                                                        return null;
-                                                    }
-                                                }).filter(Objects::nonNull);
+            try {
+                String[] arrayValues = record.split(",");
+                return new ReviewerArticle(arrayValues[0], arrayValues[1]);
+            }
+            catch (final Exception ex) {
+                //pass
+                return null;
+            }
+        }).filter(Objects::nonNull);
 
         Stream<PaperCitations> paperCitations = read(citedPapersFile).map(record -> {
-                                                        try {
-                                                            String[] arrayValues = record.split(",");
-                                                            return new PaperCitations(arrayValues[0], arrayValues[1]);
-                                                        }
-                                                        catch (final Exception ex) {
-                                                            // pass
-                                                            return null;
-                                                        }
-                                                    }).filter(Objects::nonNull);
+            try {
+                String[] arrayValues = record.split(",");
+                return new PaperCitations(arrayValues[0], arrayValues[1]);
+            }
+            catch (final Exception ex) {
+                // pass
+                return null;
+            }
+        }).filter(Objects::nonNull);
 
 
         Stream<AuthorWrotePaper> authorWrotePapers = read(authorWroteArticleFile).map(record -> {
-                                                            try {
-                                                                String[] arrayValues = record.split(",");
-                                                                return new AuthorWrotePaper(arrayValues[0], arrayValues[1]);
-                                                            }
-                                                            catch (final Exception ex) {
-                                                                // pass
-                                                                return null;
-                                                            }
-                                                     }).filter(Objects::nonNull);
+            try {
+                String[] arrayValues = record.split(",");
+                return new AuthorWrotePaper(arrayValues[0], arrayValues[1]);
+            }
+            catch (final Exception ex) {
+                // pass
+                return null;
+            }
+        }).filter(Objects::nonNull);
 
         Stream<VolumeOfJournal> volumeOfJournals = read(volumeOfJournalFile).map(record -> {
-                                                            try {
-                                                                String[] arrayValues = record.split(",");
-                                                                return new VolumeOfJournal(arrayValues[0], arrayValues[1]);
-                                                            }
-                                                            catch (final Exception ex) {
-                                                                // pass
-                                                                return null;
-                                                            }
-                                                        }).filter(Objects::nonNull);
+            try {
+                String[] arrayValues = record.split(",");
+                return new VolumeOfJournal(arrayValues[0], arrayValues[1]);
+            }
+            catch (final Exception ex) {
+                // pass
+                return null;
+            }
+        }).filter(Objects::nonNull);
 
         Stream<PaperInVolume> paperInVolumes = read(paperInVolumeFile).map(record -> {
-                                                            try {
-                                                                String[] arrayValues = record.split(",");
-                                                                return new PaperInVolume(arrayValues[1], arrayValues[0]);
-                                                            }
-                                                            catch (final Exception ex) {
-                                                                // pass
-                                                                return null;
-                                                            }
-                                                        }).filter(Objects :: nonNull);
+            try {
+                String[] arrayValues = record.split(",");
+                return new PaperInVolume(arrayValues[1], arrayValues[0]);
+            }
+            catch (final Exception ex) {
+                // pass
+                return null;
+            }
+        }).filter(Objects :: nonNull);
 
         //Jena
         Model model = ModelFactory.createDefaultModel();
@@ -158,24 +156,24 @@ public class DataLoader {
 
         authors.forEach(author -> {
             String authorName = author.getName();
-            Resource authorResource = model.createResource(AUTHOR_BASE_URL + "/" + asUtf8(authorName))
-                                           .addLiteral(authorNameProp, authorName);
+            Resource authorResource = model.createResource(AUTHOR_BASE_URL + "/" + urlEncode(authorName))
+                    .addLiteral(authorNameProp, authorName);
 
             model.add(model.createStatement(authorResource, rdfTypeProp, authorClassResource));
         });
 
         articles.forEach(article -> {
             String articleName = article.getName();
-            Resource articleResource = model.createResource(ARTICLE_BASE_URL + "/" + asUtf8(articleName))
-                                            .addLiteral(articleNameProp, articleName);
+            Resource articleResource = model.createResource(ARTICLE_BASE_URL + "/" + urlEncode(articleName))
+                    .addLiteral(articleNameProp, articleName);
 
             model.add(model.createStatement(articleResource, rdfTypeProp, articleClassResource));
         });
 
         conferences.forEach(conf -> {
             String confName = conf.getName();
-            Resource confResource = model.createResource(CONF_BASE_URL + "/" + asUtf8(confName))
-                                            .addLiteral(confNameProp, confName);
+            Resource confResource = model.createResource(CONF_BASE_URL + "/" + urlEncode(confName))
+                    .addLiteral(confNameProp, confName);
 
             model.add(model.createStatement(confResource, rdfTypeProp, confClassResource));
 
@@ -183,27 +181,27 @@ public class DataLoader {
 
         editions.forEach(edition -> {
             String editionName = edition.getName();
-            Resource editionResource = model.createResource(EDITION_BASE_URL + "/" + asUtf8(editionName))
-                                             .addLiteral(editionNameProp, editionName)
-                                             .addLiteral(editionYearProp, String.valueOf(edition.getYear()))
-                                             .addLiteral(editionCityProp, edition.getCity());
+            Resource editionResource = model.createResource(EDITION_BASE_URL + "/" + urlEncode(editionName))
+                    .addLiteral(editionNameProp, editionName)
+                    .addLiteral(editionYearProp, String.valueOf(edition.getYear()))
+                    .addLiteral(editionCityProp, edition.getCity());
             model.add(model.createStatement(editionResource, rdfTypeProp, editionClassResource));
         });
 
         journals.forEach(journal -> {
             String journalName = journal.getName();
-            Resource journalResource = model.createResource(JOURNAL_BASE_URL + "/" + asUtf8(journalName))
-                                             .addLiteral(journalNameProp, journalName);
+            Resource journalResource = model.createResource(JOURNAL_BASE_URL + "/" + urlEncode(journalName))
+                    .addLiteral(journalNameProp, journalName);
 
             model.add(model.createStatement(journalResource, rdfTypeProp, journalClassResource));
         });
 
         volumes.forEach(volume-> {
             String volumeName = volume.getName();
-            Resource volumeResource = model.createResource(VOLUME_BASE_URL + "/" + asUtf8(volumeName))
-                                             .addLiteral(volumeNameProp, volumeName)
-                                             .addLiteral(volumeYearProp, String.valueOf(volume.getYear()))
-                                             .addLiteral(volumeCityProp, volume.getCity());
+            Resource volumeResource = model.createResource(VOLUME_BASE_URL + "/" + urlEncode(volumeName))
+                    .addLiteral(volumeNameProp, volumeName)
+                    .addLiteral(volumeYearProp, String.valueOf(volume.getYear()))
+                    .addLiteral(volumeCityProp, volume.getCity());
 
             model.add(model.createStatement(volumeResource, rdfTypeProp, journalClassResource));
         });
@@ -211,17 +209,17 @@ public class DataLoader {
         reviewerArticles.forEach(reviewerArticle -> {
             String reviewerName = reviewerArticle.getAuthorName();
             String paperName = reviewerArticle.getPaperName();
-            String paperUri =  ARTICLE_BASE_URL + "/" + asUtf8(paperName);
+            String paperUri =  ARTICLE_BASE_URL + "/" + urlEncode(paperName);
             Review review = new Review(DUMMY_REVIEW, Util.randomDate());
 
-            String reviewUri =  REVIEW_BASE_URL + "/" + asUtf8(review.getContent());
+            String reviewUri =  REVIEW_BASE_URL + "/" + urlEncode(review.getContent());
             Resource reviewResource = model.createResource(reviewUri)
-                                           .addLiteral(reviewContentProp, review.getContent())
-                                           .addLiteral(reviewDateProp, review.getDate());
+                    .addLiteral(reviewContentProp, review.getContent())
+                    .addLiteral(reviewDateProp, review.getDate());
             model.add(model.createStatement(reviewResource, rdfTypeProp, reviewClassResource));
 
-            Resource reviewerResource = model.createResource(REVIEWER_BASE_URL + "/" + asUtf8(reviewerName))
-                                             .addLiteral(reviewerNameProp, reviewerName);
+            Resource reviewerResource = model.createResource(REVIEWER_BASE_URL + "/" + urlEncode(reviewerName))
+                    .addLiteral(reviewerNameProp, reviewerName);
 
             model.add(model.createStatement(reviewerResource, rdfTypeProp, reviewerClassResource));
             model.add(model.createStatement(reviewerResource, givesProp, reviewResource));
@@ -235,8 +233,8 @@ public class DataLoader {
         paperCitations.forEach(paperCitation -> {
             String paperName = paperCitation.getPaperName();
             String citedPaperName = paperCitation.getCitedPaperName();
-            String paperUri = ARTICLE_BASE_URL + "/" + asUtf8(paperName);
-            String citedPaperUri = ARTICLE_BASE_URL + "/" + asUtf8(citedPaperName);
+            String paperUri = ARTICLE_BASE_URL + "/" + urlEncode(paperName);
+            String citedPaperUri = ARTICLE_BASE_URL + "/" + urlEncode(citedPaperName);
             Resource paperResource = model.getResource(paperUri);
             Resource citedPaperResource = model.getResource(citedPaperUri);
 
@@ -247,8 +245,8 @@ public class DataLoader {
             String authorName = authorWrotePaper.getAuthorName();
             String paperName = authorWrotePaper.getPaperName();
 
-            String authorUri = AUTHOR_BASE_URL + "/" + asUtf8(authorName);
-            String paperUri = ARTICLE_BASE_URL + "/" + asUtf8(paperName);
+            String authorUri = AUTHOR_BASE_URL + "/" + urlEncode(authorName);
+            String paperUri = ARTICLE_BASE_URL + "/" + urlEncode(paperName);
 
             Resource authorResource = model.getResource(authorUri);
             Resource paperResource = model.getResource(paperUri);
@@ -260,8 +258,8 @@ public class DataLoader {
             String volName = volumeOfJournal.getVolume();
             String journalName = volumeOfJournal.getJournalName();
 
-            String volUri = VOLUME_BASE_URL + "/" + asUtf8(volName);
-            String journalUri = JOURNAL_BASE_URL + "/" + asUtf8(journalName);
+            String volUri = VOLUME_BASE_URL + "/" + urlEncode(volName);
+            String journalUri = JOURNAL_BASE_URL + "/" + urlEncode(journalName);
 
             Resource volResource = model.getResource(volUri);
             Resource journalResource = model.getResource(journalUri);
@@ -273,8 +271,8 @@ public class DataLoader {
             String paperName = paperInVolume.getPaperName();
             String volumeName = paperInVolume.getVolumeName();
 
-            String paperUri = ARTICLE_BASE_URL + "/" + asUtf8(paperName);
-            String volumeUri = VOLUME_BASE_URL + "/" + asUtf8(volumeName);
+            String paperUri = ARTICLE_BASE_URL + "/" + urlEncode(paperName);
+            String volumeUri = VOLUME_BASE_URL + "/" + urlEncode(volumeName);
 
             Resource paperResource = model.getResource(paperUri);
             Resource volumeResource = model.getResource(volumeUri);
@@ -284,7 +282,7 @@ public class DataLoader {
         paperKeywords.forEach(keywordInPaper -> {
             String paperName = keywordInPaper.getPaperName();
 
-            String paperUri = ARTICLE_BASE_URL + "/" + asUtf8(paperName);
+            String paperUri = ARTICLE_BASE_URL + "/" + urlEncode(paperName);
             Resource paperResource = model.getResource(paperUri);
             paperResource.addLiteral(keywordsProp, keywordInPaper.getKeyword());
         });
@@ -296,9 +294,9 @@ public class DataLoader {
     }
 
     private static Stream<String> read(final File file) throws IOException {
-       return Files
-               .lines(Paths.get(file.getPath()))
-               .skip(1);
+        return Files
+                .lines(Paths.get(file.getPath()))
+                .skip(1);
     }
 
     private static File asFile(final String fileName) {
@@ -318,7 +316,7 @@ public class DataLoader {
         return result.get(0);
     }
 
-    private static String asUtf8(final String string) {
+    private static String urlEncode(final String string) {
         try {
             return URLEncoder.encode(string, "UTF-8");
         } catch (final UnsupportedEncodingException e) {
