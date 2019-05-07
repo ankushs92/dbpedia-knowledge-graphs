@@ -124,13 +124,14 @@ public class DataLoader {
 
         //Jena
         Model model = ModelFactory.createDefaultModel();
-        Property authorClassResource = model.createProperty(AUTHOR_BASE_URL);
-        Property articleClassResource = model.createProperty(ARTICLE_BASE_URL);
-        Property confClassResource = model.createProperty(CONF_BASE_URL);
-        Property editionClassResource = model.createProperty(EDITION_BASE_URL);
-        Property journalClassResource = model.createProperty(JOURNAL_BASE_URL);
-        Property reviewerClassResource = model.createProperty(REVIEWER_BASE_URL);
-        Property reviewClassResource = model.createProperty(REVIEW_BASE_PROPERTY_URL);
+        Resource authorClassResource = model.createResource(AUTHOR_BASE_URL);
+        Resource articleClassResource = model.createResource(ARTICLE_BASE_URL);
+        Resource confClassResource = model.createResource(CONF_BASE_URL);
+        Resource editionClassResource = model.createResource(EDITION_BASE_URL);
+        Resource journalClassResource = model.createResource(JOURNAL_BASE_URL);
+        Resource reviewerClassResource = model.createResource(REVIEWER_BASE_URL);
+        Resource reviewClassResource = model.createResource(REVIEW_BASE_PROPERTY_URL);
+
         Property rdfTypeProp = model.createProperty(RDFS_BASE_PROPERTY_URL);
 
         Property articleNameProp = model.createProperty(ARTICLE_NAME_BASE_PROPERTY_URL);
@@ -153,7 +154,7 @@ public class DataLoader {
         Property reviewProp = model.createProperty(REVIEW_BASE_PROPERTY_URL);
         Property wroteProp = model.createProperty(AUTHOR_WROTE_PAPER_BASE_PROPERTY_URL);
         Property volumePartOfProp = model.createProperty(VOLUME_PART_OF_BASE_PROPERTY_URL);
-        Property paperVolume = model.createProperty(PAPER_VOLUME_BASE_PROPERTY_URL);
+        Property paperVolumeProp = model.createProperty(PAPER_VOLUME_BASE_PROPERTY_URL);
 
         authors.forEach(author -> {
             String authorName = author.getName();
@@ -277,7 +278,7 @@ public class DataLoader {
 
             Resource paperResource = model.getResource(paperUri);
             Resource volumeResource = model.getResource(volumeUri);
-            model.add(model.createStatement(paperResource, paperVolume, volumeResource));
+            model.add(model.createStatement(paperResource, paperVolumeProp, volumeResource));
         });
 
         paperKeywords.forEach(keywordInPaper -> {
@@ -288,9 +289,9 @@ public class DataLoader {
             paperResource.addLiteral(keywordsProp, keywordInPaper.getKeyword());
         });
 
-//        model.write(System.out, "N-TRIPLE");
+        model.write(System.out, "N-TRIPLE");
 
-        model.write(new FileOutputStream(asFile(FileName.OUTPUT)), "N-TRIPLE");
+//        model.write(new FileOutputStream(asFile(FileName.OUTPUT)), "N-TRIPLE");
 
     }
 
