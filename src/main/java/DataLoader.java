@@ -156,7 +156,7 @@ public class DataLoader {
         Property paperVolume = model.createProperty(PAPER_VOLUME_BASE_PROPERTY_URL);
 
         authors.forEach(author -> {
-            val authorName = author.getName();
+            String authorName = author.getName();
             Resource authorResource = model.createResource(AUTHOR_BASE_URL + "/" + asUtf8(authorName))
                                            .addLiteral(authorNameProp, authorName);
 
@@ -164,7 +164,7 @@ public class DataLoader {
         });
 
         articles.forEach(article -> {
-            val articleName = article.getName();
+            String articleName = article.getName();
             Resource articleResource = model.createResource(ARTICLE_BASE_URL + "/" + asUtf8(articleName))
                                             .addLiteral(articleNameProp, articleName);
 
@@ -215,8 +215,8 @@ public class DataLoader {
 
             String reviewUri =  REVIEW_BASE_URL + "/" + asUtf8(review.getContent());
             Resource reviewResource = model.createResource(reviewUri)
-                 .addLiteral(reviewContentProp, review.getContent())
-                 .addLiteral(reviewDateProp, review.getDate());
+                                           .addLiteral(reviewContentProp, review.getContent())
+                                           .addLiteral(reviewDateProp, review.getDate());
             model.add(model.createStatement(reviewResource, rdfTypeProp, reviewClassResource));
 
             Resource reviewerResource = model.createResource(REVIEWER_BASE_URL + "/" + asUtf8(reviewerName))
@@ -278,7 +278,6 @@ public class DataLoader {
             Resource paperResource = model.getResource(paperUri);
             Resource volumeResource = model.getResource(volumeUri);
             model.add(model.createStatement(paperResource, paperVolume, volumeResource));
-
         });
 
         paperKeywords.forEach(keywordInPaper -> {
