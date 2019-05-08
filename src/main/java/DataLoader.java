@@ -1,5 +1,4 @@
 import model.*;
-import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -37,17 +36,17 @@ public class DataLoader {
         File volumeOfJournalFile = asFile(FileName.VOLUME_OF_JOURNAL);
         File paperInVolumeFile = asFile(FileName.VOLUME_HAS_ARTICLE);
 
-        Stream<Author> authors = read(authorsFile).map(Author::new).limit(10);
-        Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0])).limit(10);
-        Stream<Conference> conferences = read(confFile).map(Conference::new).limit(10);
+        Stream<Author> authors = read(authorsFile).map(Author::new);
+        Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0]));
+        Stream<Conference> conferences = read(confFile).map(Conference::new);
         Stream<Edition> editions = read(editionFile).map(record -> {
             String editionName = record.split(",")[0];
             Integer year = YEARS.get(generateRandomIntegerBetween(0, YEARS.size() - 1));
             String city = CITIES.get(generateRandomIntegerBetween(0, CITIES.size() - 1));
             return new Edition(editionName, year, city);
-        }).limit(10);
+        });
 
-        Stream<Journal> journals = read(journalsFile).map(Journal::new).limit(10);
+        Stream<Journal> journals = read(journalsFile).map(Journal::new);
         Stream<PaperKeyword> paperKeywords = read(keywordsFile).map(record -> {
             try {
                 String[] arrayValues = record.split(",");
@@ -57,14 +56,14 @@ public class DataLoader {
                 //pass
             }
             return null;
-        }).filter(Objects::nonNull).limit(10);
+        }).filter(Objects::nonNull);
 
         Stream<Volume> volumes = read(volumesFile).map(record -> {
             String volumeName = record.split(",")[0];
             Integer year = YEARS.get(generateRandomIntegerBetween(0, YEARS.size() - 1));
             String city = CITIES.get(generateRandomIntegerBetween(0, CITIES.size() - 1));
             return new Volume(volumeName, year, city);
-        }).limit(10);
+        });
 
         Stream<ReviewerArticle> reviewerArticles = read(reviewersArticles).map(record -> {
             try {
@@ -75,7 +74,7 @@ public class DataLoader {
                 //pass
                 return null;
             }
-        }).filter(Objects::nonNull).limit(10);
+        }).filter(Objects::nonNull);
 
         Stream<PaperCitations> paperCitations = read(citedPapersFile).map(record -> {
             try {
@@ -86,7 +85,7 @@ public class DataLoader {
                 // pass
                 return null;
             }
-        }).filter(Objects::nonNull).limit(10);
+        }).filter(Objects::nonNull);
 
 
         Stream<AuthorWrotePaper> authorWrotePapers = read(authorWroteArticleFile).map(record -> {
@@ -98,7 +97,7 @@ public class DataLoader {
                 // pass
                 return null;
             }
-        }).filter(Objects::nonNull).limit(10);
+        }).filter(Objects::nonNull);
 
         Stream<VolumeOfJournal> volumeOfJournals = read(volumeOfJournalFile).map(record -> {
             try {
@@ -109,7 +108,7 @@ public class DataLoader {
                 // pass
                 return null;
             }
-        }).filter(Objects::nonNull).limit(10);
+        }).filter(Objects::nonNull);
 
         Stream<PaperInVolume> paperInVolumes = read(paperInVolumeFile).map(record -> {
             try {
@@ -120,15 +119,16 @@ public class DataLoader {
                 // pass
                 return null;
             }
-        }).filter(Objects :: nonNull).limit(10);
+        }).filter(Objects :: nonNull);
 
         //Jena
-        Model model = ModelFactory.createOntologyModel();
-        model.read(asFile("tbox.owl").toURI().toString());
+        Model model = ModelFactory.createDefaultModel();
+//        model.read(asFile("tbox.owl").toURI().toString());
 
 
         Resource authorClassResource = model.getResource(AUTHOR_BASE_URL);
-        Resource articleClassResource = model.getResource(ARTICLE_BASE_URL);
+        Resource paperClassResource = model.getResource(PAPER_BASE_URL);
+        Resource shortPaperClassResource = model.getResource(SHORT_PAPER_BASE_URL);
         Resource confClassResource = model.getResource(CONF_BASE_URL);
         Resource editionClassResource = model.getResource(EDITION_BASE_URL);
         Resource journalClassResource = model.getResource(JOURNAL_BASE_URL);
@@ -158,7 +158,7 @@ public class DataLoader {
         Property wroteProp = model.getProperty(AUTHOR_WROTE_PAPER_BASE_PROPERTY_URL);
         Property volumePartOfProp = model.getProperty(VOLUME_PART_OF_BASE_PROPERTY_URL);
         Property paperVolumeProp = model.getProperty(PAPER_VOLUME_BASE_PROPERTY_URL);
-
+//
         authors.forEach(author -> {
             String authorName = author.getName();
             Resource authorResource = model.createResource(AUTHOR_BASE_URL + "/" + urlEncode(authorName))
@@ -169,11 +169,15 @@ public class DataLoader {
 
         articles.forEach(article -> {
             String articleName = article.getName();
-            Resource articleResource = model.createResource(ARTICLE_BASE_URL + "/" + urlEncode(articleName))
+            Resource shortPaperResource = model.createResource(SHORT_PAPER_BASE_URL + "/" + urlEncode(articleName))
                     .addLiteral(articleNameProp, articleName);
 
-            model.add(model.createStatement(articleResource, rdfTypeProp, articleClassResource));
+
+            model.add(model.createStatement(shortPaperResource, rdfTypeProp, shortPaperClassResource));
+            model.add(model.createStatement(shortPaperResource, rdfTypeProp, paperClassResource));
+
         });
+
 
         conferences.forEach(conf -> {
             String confName = conf.getName();
@@ -214,7 +218,7 @@ public class DataLoader {
         reviewerArticles.forEach(reviewerArticle -> {
             String reviewerName = reviewerArticle.getAuthorName();
             String paperName = reviewerArticle.getPaperName();
-            String paperUri =  ARTICLE_BASE_URL + "/" + urlEncode(paperName);
+            String paperUri =  SHORT_PAPER_BASE_URL + "/" + urlEncode(paperName);
             Review review = new Review(DUMMY_REVIEW, Util.randomDate());
 
             //Because the content of each review is same, we append a unique id with it
@@ -239,8 +243,8 @@ public class DataLoader {
         paperCitations.forEach(paperCitation -> {
             String paperName = paperCitation.getPaperName();
             String citedPaperName = paperCitation.getCitedPaperName();
-            String paperUri = ARTICLE_BASE_URL + "/" + urlEncode(paperName);
-            String citedPaperUri = ARTICLE_BASE_URL + "/" + urlEncode(citedPaperName);
+            String paperUri = SHORT_PAPER_BASE_URL + "/" + urlEncode(paperName);
+            String citedPaperUri = SHORT_PAPER_BASE_URL + "/" + urlEncode(citedPaperName);
             Resource paperResource = model.getResource(paperUri);
             Resource citedPaperResource = model.getResource(citedPaperUri);
 
@@ -252,7 +256,7 @@ public class DataLoader {
             String paperName = authorWrotePaper.getPaperName();
 
             String authorUri = AUTHOR_BASE_URL + "/" + urlEncode(authorName);
-            String paperUri = ARTICLE_BASE_URL + "/" + urlEncode(paperName);
+            String paperUri = SHORT_PAPER_BASE_URL + "/" + urlEncode(paperName);
 
             Resource authorResource = model.getResource(authorUri);
             Resource paperResource = model.getResource(paperUri);
@@ -277,7 +281,7 @@ public class DataLoader {
             String paperName = paperInVolume.getPaperName();
             String volumeName = paperInVolume.getVolumeName();
 
-            String paperUri = ARTICLE_BASE_URL + "/" + urlEncode(paperName);
+            String paperUri = SHORT_PAPER_BASE_URL + "/" + urlEncode(paperName);
             String volumeUri = VOLUME_BASE_URL + "/" + urlEncode(volumeName);
 
             Resource paperResource = model.getResource(paperUri);
@@ -288,7 +292,7 @@ public class DataLoader {
         paperKeywords.forEach(keywordInPaper -> {
             String paperName = keywordInPaper.getPaperName();
 
-            String paperUri = ARTICLE_BASE_URL + "/" + urlEncode(paperName);
+            String paperUri = SHORT_PAPER_BASE_URL + "/" + urlEncode(paperName);
             Resource paperResource = model.getResource(paperUri);
             paperResource.addLiteral(keywordsProp, keywordInPaper.getKeyword());
         });
@@ -309,6 +313,7 @@ public class DataLoader {
         String absFilePath = DataLoader.class.getClassLoader().getResource(fileName).getFile();
         return new File(absFilePath);
     }
+
     private static final Random random = new Random();
 
     private static int generateRandomIntegerBetween(final int from, final int to) {

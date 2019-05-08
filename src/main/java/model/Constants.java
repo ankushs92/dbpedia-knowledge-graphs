@@ -41,7 +41,9 @@ public class Constants {
 
 
     public static final String AUTHOR_BASE_URL = BASE_URL + "/Author";
-    public static final String ARTICLE_BASE_URL = BASE_URL + "/Article";
+    public static final String PAPER_BASE_URL = BASE_URL + "/Paper";
+    public static final String SHORT_PAPER_BASE_URL = BASE_URL + "/Paper/ShortPaper";
+
     public static final String CONF_BASE_URL = BASE_URL + "/Conference";
     public static final String EDITION_BASE_URL = BASE_URL + "/Edition";
     public static final String JOURNAL_BASE_URL = BASE_URL + "/Journal";
