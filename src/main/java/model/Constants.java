@@ -8,8 +8,8 @@ public class Constants {
 
     public static final String DUMMY_REVIEW = "Lorem Ipsum";
 
-    public static final String BASE_URL = "http://semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3";
-    public static final String BASE_PROPERTY_URL = "http://semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3/property";
+    public static final String BASE_URL = "http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3";
+    public static final String BASE_PROPERTY_URL = "http://www.semanticweb.org/ankushsharma/ontologies/2019/4/untitled-ontology-3/property";
 
     public static final String KEYWORDS_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#keyword";
     public static final String RDFS_BASE_PROPERTY_URL = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
@@ -38,7 +38,6 @@ public class Constants {
     public static final String AUTHOR_WROTE_PAPER_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#wrote";
     public static final String VOLUME_PART_OF_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#volume_part_of";
     public static final String PAPER_VOLUME_BASE_PROPERTY_URL = BASE_PROPERTY_URL + "#volume";
-
 
 
     public static final String AUTHOR_BASE_URL = BASE_URL + "/Author";
