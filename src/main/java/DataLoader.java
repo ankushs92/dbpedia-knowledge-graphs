@@ -1,4 +1,5 @@
 import model.*;
+import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -36,17 +37,17 @@ public class DataLoader {
         File volumeOfJournalFile = asFile(FileName.VOLUME_OF_JOURNAL);
         File paperInVolumeFile = asFile(FileName.VOLUME_HAS_ARTICLE);
 
-        Stream<Author> authors = read(authorsFile).map(Author::new);
-        Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0]));
-        Stream<Conference> conferences = read(confFile).map(Conference::new);
+        Stream<Author> authors = read(authorsFile).map(Author::new).limit(10);
+        Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0])).limit(10);
+        Stream<Conference> conferences = read(confFile).map(Conference::new).limit(10);
         Stream<Edition> editions = read(editionFile).map(record -> {
             String editionName = record.split(",")[0];
             Integer year = YEARS.get(generateRandomIntegerBetween(0, YEARS.size() - 1));
             String city = CITIES.get(generateRandomIntegerBetween(0, CITIES.size() - 1));
             return new Edition(editionName, year, city);
-        });
+        }).limit(10);
 
-        Stream<Journal> journals = read(journalsFile).map(Journal::new);
+        Stream<Journal> journals = read(journalsFile).map(Journal::new).limit(10);
         Stream<PaperKeyword> paperKeywords = read(keywordsFile).map(record -> {
             try {
                 String[] arrayValues = record.split(",");
@@ -56,14 +57,14 @@ public class DataLoader {
                 //pass
             }
             return null;
-        }).filter(Objects::nonNull);
+        }).filter(Objects::nonNull).limit(10);
 
         Stream<Volume> volumes = read(volumesFile).map(record -> {
             String volumeName = record.split(",")[0];
             Integer year = YEARS.get(generateRandomIntegerBetween(0, YEARS.size() - 1));
             String city = CITIES.get(generateRandomIntegerBetween(0, CITIES.size() - 1));
             return new Volume(volumeName, year, city);
-        });
+        }).limit(10);
 
         Stream<ReviewerArticle> reviewerArticles = read(reviewersArticles).map(record -> {
             try {
@@ -74,7 +75,7 @@ public class DataLoader {
                 //pass
                 return null;
             }
-        }).filter(Objects::nonNull);
+        }).filter(Objects::nonNull).limit(10);
 
         Stream<PaperCitations> paperCitations = read(citedPapersFile).map(record -> {
             try {
@@ -85,7 +86,7 @@ public class DataLoader {
                 // pass
                 return null;
             }
-        }).filter(Objects::nonNull);
+        }).filter(Objects::nonNull).limit(10);
 
 
         Stream<AuthorWrotePaper> authorWrotePapers = read(authorWroteArticleFile).map(record -> {
@@ -97,7 +98,7 @@ public class DataLoader {
                 // pass
                 return null;
             }
-        }).filter(Objects::nonNull);
+        }).filter(Objects::nonNull).limit(10);
 
         Stream<VolumeOfJournal> volumeOfJournals = read(volumeOfJournalFile).map(record -> {
             try {
@@ -108,7 +109,7 @@ public class DataLoader {
                 // pass
                 return null;
             }
-        }).filter(Objects::nonNull);
+        }).filter(Objects::nonNull).limit(10);
 
         Stream<PaperInVolume> paperInVolumes = read(paperInVolumeFile).map(record -> {
             try {
@@ -119,41 +120,44 @@ public class DataLoader {
                 // pass
                 return null;
             }
-        }).filter(Objects :: nonNull);
+        }).filter(Objects :: nonNull).limit(10);
 
         //Jena
-        Model model = ModelFactory.createDefaultModel();
-        Resource authorClassResource = model.createResource(AUTHOR_BASE_URL);
-        Resource articleClassResource = model.createResource(ARTICLE_BASE_URL);
-        Resource confClassResource = model.createResource(CONF_BASE_URL);
-        Resource editionClassResource = model.createResource(EDITION_BASE_URL);
-        Resource journalClassResource = model.createResource(JOURNAL_BASE_URL);
-        Resource reviewerClassResource = model.createResource(REVIEWER_BASE_URL);
-        Resource reviewClassResource = model.createResource(REVIEW_BASE_URL);
+        Model model = ModelFactory.createOntologyModel();
+        model.read(asFile("tbox.owl").toURI().toString());
 
-        Property rdfTypeProp = model.createProperty(RDFS_BASE_PROPERTY_URL);
 
-        Property articleNameProp = model.createProperty(ARTICLE_NAME_BASE_PROPERTY_URL);
-        Property authorNameProp = model.createProperty(AUTHOR_NAME_BASE_PROPERTY_URL);
-        Property confNameProp = model.createProperty(CONF_NAME_BASE_PROPERTY_URL);
-        Property editionNameProp = model.createProperty(EDITION_NAME_BASE_PROPERTY_URL);
-        Property editionYearProp = model.createProperty(EDITION_YEAR_BASE_PROPERTY_URL);
-        Property editionCityProp = model.createProperty(EDITION_CITY_BASE_PROPERTY_URL);
-        Property journalNameProp = model.createProperty(JOURNAL_NAME_BASE_PROPERTY_URL);
-        Property volumeNameProp = model.createProperty(VOLUME_NAME_BASE_PROPERTY_URL);
-        Property volumeYearProp = model.createProperty(VOLUME_YEAR_BASE_PROPERTY_URL);
-        Property volumeCityProp = model.createProperty(VOLUME_CITY_BASE_PROPERTY_URL);
-        Property reviewerNameProp = model.createProperty(REVIEWER_NAME_BASE_PROPERTY_URL);
-        Property reviewContentProp = model.createProperty(REVIEW_CONTENT_BASE_PROPERTY_URL);
-        Property reviewDateProp = model.createProperty(REVIEW_DATE_BASE_PROPERTY_URL);
-        Property keywordsProp = model.createProperty(KEYWORDS_BASE_PROPERTY_URL);
+        Resource authorClassResource = model.getResource(AUTHOR_BASE_URL);
+        Resource articleClassResource = model.getResource(ARTICLE_BASE_URL);
+        Resource confClassResource = model.getResource(CONF_BASE_URL);
+        Resource editionClassResource = model.getResource(EDITION_BASE_URL);
+        Resource journalClassResource = model.getResource(JOURNAL_BASE_URL);
+        Resource reviewerClassResource = model.getResource(REVIEWER_BASE_URL);
+        Resource reviewClassResource = model.getResource(REVIEW_BASE_URL);
 
-        Property givesProp = model.createProperty(REVIEWER_GIVES_REVIEW_BASE_PROPERTY_URL);
-        Property citationsProp = model.createProperty(CITATIONS_BASE_PROPERTY_URL);
-        Property reviewProp = model.createProperty(REVIEW_BASE_PROPERTY_URL);
-        Property wroteProp = model.createProperty(AUTHOR_WROTE_PAPER_BASE_PROPERTY_URL);
-        Property volumePartOfProp = model.createProperty(VOLUME_PART_OF_BASE_PROPERTY_URL);
-        Property paperVolumeProp = model.createProperty(PAPER_VOLUME_BASE_PROPERTY_URL);
+        Property rdfTypeProp = model.getProperty(RDFS_BASE_PROPERTY_URL);
+
+        Property articleNameProp = model.getProperty(ARTICLE_NAME_BASE_PROPERTY_URL);
+        Property authorNameProp = model.getProperty(AUTHOR_NAME_BASE_PROPERTY_URL);
+        Property confNameProp = model.getProperty(CONF_NAME_BASE_PROPERTY_URL);
+        Property editionNameProp = model.getProperty(EDITION_NAME_BASE_PROPERTY_URL);
+        Property editionYearProp = model.getProperty(EDITION_YEAR_BASE_PROPERTY_URL);
+        Property editionCityProp = model.getProperty(EDITION_CITY_BASE_PROPERTY_URL);
+        Property journalNameProp = model.getProperty(JOURNAL_NAME_BASE_PROPERTY_URL);
+        Property volumeNameProp = model.getProperty(VOLUME_NAME_BASE_PROPERTY_URL);
+        Property volumeYearProp = model.getProperty(VOLUME_YEAR_BASE_PROPERTY_URL);
+        Property volumeCityProp = model.getProperty(VOLUME_CITY_BASE_PROPERTY_URL);
+        Property reviewerNameProp = model.getProperty(REVIEWER_NAME_BASE_PROPERTY_URL);
+        Property reviewContentProp = model.getProperty(REVIEW_CONTENT_BASE_PROPERTY_URL);
+        Property reviewDateProp = model.getProperty(REVIEW_DATE_BASE_PROPERTY_URL);
+        Property keywordsProp = model.getProperty(KEYWORDS_BASE_PROPERTY_URL);
+
+        Property givesProp = model.getProperty(REVIEWER_GIVES_REVIEW_BASE_PROPERTY_URL);
+        Property citationsProp = model.getProperty(CITATIONS_BASE_PROPERTY_URL);
+        Property reviewProp = model.getProperty(REVIEW_BASE_PROPERTY_URL);
+        Property wroteProp = model.getProperty(AUTHOR_WROTE_PAPER_BASE_PROPERTY_URL);
+        Property volumePartOfProp = model.getProperty(VOLUME_PART_OF_BASE_PROPERTY_URL);
+        Property paperVolumeProp = model.getProperty(PAPER_VOLUME_BASE_PROPERTY_URL);
 
         authors.forEach(author -> {
             String authorName = author.getName();
