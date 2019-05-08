@@ -41,14 +41,14 @@ public class Constants {
 
 
 
-    public static final String AUTHOR_BASE_URL = BASE_URL + "/author";
-    public static final String ARTICLE_BASE_URL = BASE_URL + "/article";
-    public static final String CONF_BASE_URL = BASE_URL + "/conf";
-    public static final String EDITION_BASE_URL = BASE_URL + "/edition";
-    public static final String JOURNAL_BASE_URL = BASE_URL + "/journal";
-    public static final String VOLUME_BASE_URL = BASE_URL + "/volume";
-    public static final String REVIEWER_BASE_URL = BASE_URL + "/reviewer";
-    public static final String REVIEW_BASE_URL = BASE_URL + "/review";
+    public static final String AUTHOR_BASE_URL = BASE_URL + "/Author";
+    public static final String ARTICLE_BASE_URL = BASE_URL + "/Article";
+    public static final String CONF_BASE_URL = BASE_URL + "/Conference";
+    public static final String EDITION_BASE_URL = BASE_URL + "/Edition";
+    public static final String JOURNAL_BASE_URL = BASE_URL + "/Journal";
+    public static final String VOLUME_BASE_URL = BASE_URL + "/Volume";
+    public static final String REVIEWER_BASE_URL = BASE_URL + "/Reviewer";
+    public static final String REVIEW_BASE_URL = BASE_URL + "/Review";
 
 
     public static final List<Integer> YEARS = Collections.unmodifiableList(

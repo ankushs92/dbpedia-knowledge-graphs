@@ -5,6 +5,7 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -35,13 +36,13 @@ public class DataLoader {
         File volumeOfJournalFile = asFile(FileName.VOLUME_OF_JOURNAL);
         File paperInVolumeFile = asFile(FileName.VOLUME_HAS_ARTICLE);
 
-        Stream<Author> authors = read(authorsFile).map(Author::new).limit(10);
+        Stream<Author> authors = read(authorsFile).map(Author::new);
         Stream<Article> articles = read(articlesFile).map(record -> new Article(record.split(",")[0]));
         Stream<Conference> conferences = read(confFile).map(Conference::new);
         Stream<Edition> editions = read(editionFile).map(record -> {
             String editionName = record.split(",")[0];
-            Integer year = YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1));
-            String city = CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1));
+            Integer year = YEARS.get(generateRandomIntegerBetween(0, YEARS.size() - 1));
+            String city = CITIES.get(generateRandomIntegerBetween(0, CITIES.size() - 1));
             return new Edition(editionName, year, city);
         });
 
@@ -59,8 +60,8 @@ public class DataLoader {
 
         Stream<Volume> volumes = read(volumesFile).map(record -> {
             String volumeName = record.split(",")[0];
-            Integer year = YEARS.get(generateRandomIntegersBetween(0, YEARS.size() - 1));
-            String city = CITIES.get(generateRandomIntegersBetween(0, CITIES.size() - 1));
+            Integer year = YEARS.get(generateRandomIntegerBetween(0, YEARS.size() - 1));
+            String city = CITIES.get(generateRandomIntegerBetween(0, CITIES.size() - 1));
             return new Volume(volumeName, year, city);
         });
 
@@ -287,9 +288,9 @@ public class DataLoader {
             paperResource.addLiteral(keywordsProp, keywordInPaper.getKeyword());
         });
 
-        model.write(System.out, "N-TRIPLE");
+//        model.write(System.out, "N-TRIPLE");
 
-//        model.write(new FileOutputStream(asFile(FileName.OUTPUT)), "N-TRIPLE");
+        model.write(new FileOutputStream(asFile(FileName.OUTPUT)), "N-TRIPLE");
 
     }
 
@@ -305,7 +306,7 @@ public class DataLoader {
     }
     private static final Random random = new Random();
 
-    private static int generateRandomIntegersBetween(final int from, final int to) {
+    private static int generateRandomIntegerBetween(final int from, final int to) {
         //Set Will ensure uniqueness.
         final List<Integer> result = new ArrayList<>();
         int range = to - from + 1;
