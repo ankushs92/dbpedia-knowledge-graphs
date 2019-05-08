@@ -129,7 +129,7 @@ public class DataLoader {
         Resource editionClassResource = model.createResource(EDITION_BASE_URL);
         Resource journalClassResource = model.createResource(JOURNAL_BASE_URL);
         Resource reviewerClassResource = model.createResource(REVIEWER_BASE_URL);
-        Resource reviewClassResource = model.createResource(REVIEW_BASE_PROPERTY_URL);
+        Resource reviewClassResource = model.createResource(REVIEW_BASE_URL);
 
         Property rdfTypeProp = model.createProperty(RDFS_BASE_PROPERTY_URL);
 
@@ -213,7 +213,9 @@ public class DataLoader {
             String paperUri =  ARTICLE_BASE_URL + "/" + urlEncode(paperName);
             Review review = new Review(DUMMY_REVIEW, Util.randomDate());
 
-            String reviewUri =  REVIEW_BASE_URL + "/" + urlEncode(review.getContent());
+            //Because the content of each review is same, we append a unique id with it
+            String reviewUri =  REVIEW_BASE_URL + "/" + urlEncode(review.getContent()) + "_" + generateRandomIntegerBetween(0, 99999);
+
             Resource reviewResource = model.createResource(reviewUri)
                     .addLiteral(reviewContentProp, review.getContent())
                     .addLiteral(reviewDateProp, review.getDate());
@@ -228,7 +230,6 @@ public class DataLoader {
             Resource paperResource = model.getResource(paperUri);
 
             model.add(model.createStatement(paperResource, reviewProp, reviewResource));
-
         });
 
         paperCitations.forEach(paperCitation -> {
